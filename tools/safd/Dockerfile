@@ -6,4 +6,9 @@ RUN apt-get update && apt-get install -yq \
     && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-RUN julia -e 'using Pkg;Pkg.add(PackageSpec(url="https://bitbucket.org/SSamanipour/ms_import.jl/src/master/"));Pkg.add(PackageSpec(url="https://bitbucket.org/SSamanipour/safd.jl/src/master/"))'
+RUN julia -e \
+    'using Pkg; \
+    Pkg.add(PackageSpec(url="https://bitbucket.org/SSamanipour/ms_import.jl/src/master/"));\
+    Pkg.add(PackageSpec(url="https://bitbucket.org/SSamanipour/safd.jl/src/master/")); \
+    using SAFD; \
+    using MS_Import;'
