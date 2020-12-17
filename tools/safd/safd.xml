@@ -1,0 +1,20 @@
+<tool id="safd" name="SAFD" version="0.4.12" python_template_version="3.5">
+    <requirements>
+        <container type="docker">hechth/safd:0.0.2</container>
+    </requirements>
+    
+    <command detect_errors="aggressive"><![CDATA[
+        julia ${__tool_directory__}/safd_wrapper.jl $input_mzXML $detected_peaks
+    ]]></command>
+
+    <inputs>
+        <param name="input_mzXML" label="Input (.mzXML)" type="data" format="mzXML" help="mzXML file containing spectra." />
+    </inputs>
+
+    <outputs>
+        <data label="Peaks detected in ${on_string}" name="detected_peaks" format="csv" />
+    </outputs>
+    <help><![CDATA[
+        TODO: Fill in help.
+    ]]></help>
+</tool>
