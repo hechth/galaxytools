@@ -10,5 +10,10 @@ RUN julia -e \
     'using Pkg; \
     Pkg.add(PackageSpec(url="https://bitbucket.org/SSamanipour/ms_import.jl/src/master/"));\
     Pkg.add(PackageSpec(url="https://bitbucket.org/SSamanipour/safd.jl/src/master/")); \
+    Pkg.add("CSV"); \
+    using CSV; \
     using SAFD; \
-    using MS_Import;'
+    using MS_Import; \
+    Pkg.instantiate();'
+
+ADD ./safd_wrapper.jl /safd_wrapper.jl
