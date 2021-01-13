@@ -13,7 +13,4 @@ RUN julia -e \
     Pkg.add("CSV"); \
     using CSV; \
     using SAFD; \
-    using MS_Import; \
-    Pkg.instantiate();'
-
-ADD ./safd_wrapper.jl /safd_wrapper.jl
+    using MS_Import;'

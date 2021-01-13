@@ -1,4 +1,3 @@
-write(stdout, homedir())
 using MS_Import
 using SAFD
 using CSV

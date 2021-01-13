@@ -4,7 +4,7 @@
     </requirements>
     
     <command detect_errors="aggressive"><![CDATA[
-        julia "/safd_wrapper.jl" '$input_mzXML' '$detected_peaks'
+        julia ${__tool_directory__}/safd_wrapper.jl '$input_mzXML' '$detected_peaks'
     ]]></command>
 
     <inputs>
