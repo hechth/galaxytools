@@ -8,9 +8,11 @@ RUN apt-get update && apt-get install -yq \
 
 RUN julia -e \
     'using Pkg; \
-    Pkg.add(PackageSpec(url="https://bitbucket.org/SSamanipour/ms_import.jl/src/master/"));\
-    Pkg.add(PackageSpec(url="https://bitbucket.org/SSamanipour/safd.jl/src/master/")); \
+    Pkg.add(Pkg.PackageSpec(name="MS_Import", url="https://bitbucket.org/SSamanipour/ms_import.jl/src/master/"));\
+    Pkg.add(Pkg.PackageSpec(name="SAFD", url="https://bitbucket.org/SSamanipour/safd.jl/src/master/")); \
     Pkg.add("CSV"); \
-    using CSV; \
-    using SAFD; \
-    using MS_Import;'
+    Pkg.instantiate();'
+
+RUN chmod -R 777 /root
+
+CMD ["julia"]

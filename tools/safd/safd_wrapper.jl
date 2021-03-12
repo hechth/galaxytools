@@ -1,6 +1,7 @@
+println("Importing Dependencies")
 using MS_Import
 using SAFD
-using CSV
+import CSV
 
 function main(args)
     output_filename = "peaks"
@@ -13,16 +14,21 @@ function main(args)
     sigma_increase_threshold=5
     signal_to_noise=2
     min_peak_width_scans=3
-    filename = args[0]
-    output_dest = args[1]
-    chromatogram = import_files("", [ filename ], mz_thresh)
+    filename = args[1]
+    output_dest = args[2]
+
+    println("Creating symlink for '$filename'")
+    symlink_name = string(filename,".mzXML")
+    Base.Filesystem.symlink(filename, symlink_name)
+
+    chromatogram = import_files("", [ symlink_name ], [0,0])
+
 
     rep_table,final_table=safd(
         chromatogram["MS1"]["Mz_values"],
         chromatogram["MS1"]["Mz_intensity"],
-        chromatogram["MS1"]["Rt"][2],
-        chromatogram["MS1"]["Rt"][end],
-        output_filename,
+        chromatogram["MS1"]["Rt"],
+        filename,
         pwd(),
         max_iterations,
         max_peak_width_rt,

@@ -1,11 +1,16 @@
 <tool id="safd" name="SAFD" version="0.4.12" python_template_version="3.5">
     <requirements>
-        <container type="docker">hechth/safd:0.0.4</container>
+        <container type="docker">hechth/safd:manual-1</container>
     </requirements>
     
     <command detect_errors="aggressive"><![CDATA[
         julia ${__tool_directory__}/safd_wrapper.jl '$input_mzXML' '$detected_peaks'
     ]]></command>
+
+    <environment_variables>
+        <environment_variable name="HOME">/root</environment_variable>    
+        <environment_variable name="JULIA_LOAD_PATH">/root/.julia/environments/v1.5/Project.toml</environment_variable>    
+    </environment_variables>
 
     <inputs>
         <param name="input_mzXML" label="Input (.mzXML)" type="data" format="mzXML" help="mzXML file containing spectra." />
