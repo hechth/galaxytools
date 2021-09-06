@@ -1,11 +1,20 @@
-<tool id="safd" name="SAFD" version="0.4.12" python_template_version="3.5">
+<tool id="safd" name="SAFD" version="@TOOL_VERSION@+galaxy0" python_template_version="3.5">
+
+    <macros>
+        <import>safd_macros.xml</import>
+    </macros>
     <requirements>
-        <container type="docker">hechth/safd:0.0.4</container>
+        <container type="docker">hechth/safd:0.5.22-galaxy0</container>
     </requirements>
     
     <command detect_errors="aggressive"><![CDATA[
         julia ${__tool_directory__}/safd_wrapper.jl '$input_mzXML' '$detected_peaks'
     ]]></command>
+
+    <environment_variables>
+        <environment_variable name="HOME">/root</environment_variable>    
+        <environment_variable name="JULIA_LOAD_PATH">/root/.julia/environments/v1.5/Project.toml</environment_variable>    
+    </environment_variables>
 
     <inputs>
         <param name="input_mzXML" label="Input (.mzXML)" type="data" format="mzXML" help="mzXML file containing spectra." />
@@ -14,7 +23,17 @@
     <outputs>
         <data label="Peaks detected in ${on_string}" name="detected_peaks" format="csv" />
     </outputs>
-    <help><![CDATA[
-        TODO: Fill in help.
-    ]]></help>
+
+    <help><![CDATA[ @HELP@ ]]></help>
+
+    <tests>
+        <test>
+            <param name="input_mzXML" value="test_chrom.mzXML" ftype="mzxml"/>
+            <output name="detected_peaks" file="default_test_output.csv" ftype="csv" checksum="md5$c68dd4c774393de9959cf20bc8e9484c"/>
+        </test>
+    </tests>
+
+    <citations>
+        <citation type="doi">10.1021/acs.analchem.9b02422</citation>
+    </citations>
 </tool>

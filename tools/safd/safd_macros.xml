@@ -1,0 +1,132 @@
+<macros>
+    <token name="@TOOL_VERSION@">0.5.22</token>
+
+    <token name="@HELP@"><![CDATA[
+SAFD
+====
+
+**SAFD.jl** is a julia package for the feature detection of high resolution mass spectrometry data in profile mode, developed and tested in julia 1.0.5. The algorithm fits a pseudo 3D Gaussian to the signal of the features. More details related to the algorithm is provided `elsewhere <https://doi.org/10.1021/acs.analchem.9b02422>`_.
+
+Please cite this reference when using SAFD.jl for you own work.
+Samanipour et al. *Anal. Chem.* 2019, 91, 16, 10800–10807.
+
+
+Usage
+-----
+
+Two slightly different implementations of SAFD algorithm are available in the v 0.3.0. Both implementations use the same set of inputs parameters and the data structure. The latest implementation of SAFD algorithm is done via a function called *safd_s3D(--)*. The *safd_s3D(--)* is at least 5x faster that *safd*\ (--) function and can handle noisy wide peaks in the time domain. Additionally, this implementation does not perform the data interpolation and keeps the data as close as possible to the raw data.
+
+For the normal implementation:
+
+.. code-block:: julia
+
+   using SAFD
+
+   rep_table,final_table = safd("Inputs")
+
+   rep_table,final_table = safd(mz_vals::Array{Float64,2},mz_int::Array{Float64,2},Rt::Array{Float64,1},t_end::Float64,FileName::Any,path::String,max_numb_iter::Int64,
+       max_t_peak_w::Int64,res::Int64,min_ms_w::Float64,r_thresh::Float64,
+       min_int::Int64,sig_inc_thresh::Int64,S2N::Int64,min_peak_w_s::Int64)
+
+For *safd_s3D(--)*\ :
+
+.. code-block:: julia
+
+   using SAFD
+
+   rep_table,final_table = safd_s3D("Inputs")
+
+   rep_table,final_table = safd_s3D(mz_vals::Array{Float64,2},mz_int::Array{Float64,2},Rt::Array{Float64,1},FileName::Any,path::String,max_numb_iter::Int64,
+       max_t_peak_w::Int64,res::Int64,min_ms_w::Float64,r_thresh::Float64,
+       min_int::Int64,sig_inc_thresh::Int64,S2N::Int64,min_peak_w_s::Int64)
+
+Inputs
+^^^^^^
+
+**Algorithm parameters**\ :
+
+.. code-block:: julia
+
+   max_numb_iter::Int64 = 20000 # is the maximum number of iterations that the algorithm will perform. For a normal LC-HRMS chromatogram 20000 iterations are usually enough to
+   max_t_peak_w::Int64 = 30 or 300 # is the maximum number of scans within a chromatographic feature. This parameter depends of the sampling rate and the type of analyzed chemicals. For example, for pharmaceuticals and a sampling rate < 3 Hz, 30 scans would be a good choice for this parameter. For the safd_s3D, this parameter should be set to much higher values, for example 300 for sampling rates < 3 Hz.
+   res::Int64 = 20000 # is the expected mass resolution of the instrument. For example for a QToF system a nominal resolution of 20000 appears to be a good starting point whereas for an OrbiTrap 30000 would be adequate. This parameter is used as a first guess for the algorithm during the data processing.
+   min_ms_w::Float64 = 0.01 # is the minimum peak width in the mass domain. For small masses (e.g. 60 < m/z < 250 Da), this parameter usually overwrites the peak mass peak width estimated via Resolution (i.e. "res").  
+   r_thresh::Float64 = 0.75 # is the the R2 threshold for the Gaussian fit. A value smaller than 0.8 may result in false positives.
+   min_int::Int64 = 1000 # is the minimum intensity for the features to be detected. For QToF instruments this parameter should be set to ~ 1000.
+   sig_inc_thresh::Int64 = 5 # is the parameter for the detection of the overlapping features in the time domain. This parameter is set in percent and as an integer. The optimized value for this parameter is ~ 5.
+   S2N::Int64 = 2 # is the signal to noise ratio for the feature list filtering set as an integer. A value larger than 2 tends to produce good results with the previously tested data.  
+   min_peak_w_s::Int64 = 3 # is another feature list filtering parameter to remove the features that have less seconds than this threshold. This parameter, also, is set as an integer and for a generic chromatographic run ~ 3 seconds has shown to produce reliable results.
+
+All the necessary information for the selection of the **algorithm parameters** is provided in the manuscript associated with this package.
+
+`https://doi.org/10.1021/acs.analchem.9b02422 <https://doi.org/10.1021/acs.analchem.9b02422>`_
+
+Outputs
+^^^^^^^
+
+.. code-block:: julia
+
+
+   rep_table::Array{Float64,2} # is a matrix containing all the algorithm outputs
+   final_table # is the output matrix as a dataframe for further analysis.
+
+Additionally, the **SAFD.jl** saves the generated dataframe as a ".csv" file in the location defined by parameter "path". An example of this dataframe is provided below.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Nr
+     - ScanNum
+     - ScanInPeak
+     - Rt
+     - MinInPeak
+     - MeasMass
+     - MinMass
+     - MaxMass
+     - Area
+     - Int
+   * - Feature number
+     - Scan number
+     - Scans in feature
+     - Retention time
+     - Minutes in peak
+     - Measured mass
+     - Minimum mass
+     - Maximum mass
+     - Area
+     - Intensity
+   * - 1
+     - 8
+     - 26
+     - 10.62
+     - 13
+     - 199.1629
+     - 199.1542
+     - 199.1715
+     - 1.17E+06
+     - 41112
+   * - 2
+     - 8
+     - 17
+     - 6.153
+     - 7
+     - 374.2369
+     - 374.2184
+     - 374.258
+     - 3.92E+06
+     - 230546
+
+
+Examples
+^^^^^^^^
+
+For more examples on how to process your own data please take a look at folder `examples <https://bitbucket.org/SSamanipour/safd.jl/src/master/examples/>`_.
+
+Contribution
+------------
+
+Issues and pull requests are welcome! Please contact the developers for further information.
+
+    ]]>
+    </token>
+</macros>
