@@ -1,4 +1,4 @@
-<tool id="riassigner_from_comment" name="RIAssigner init from comment" version="@TOOL_VERSION@+galaxy4" profile="21.09">
+<tool id="riassigner_from_comment" name="RIAssigner init from comment" version="@TOOL_VERSION@+galaxy5" profile="21.09">
     <description>Assign different retention indices from unstructured comment metadata</description>
     <macros>
         <import>macros.xml</import>
@@ -22,10 +22,15 @@
     <configfiles>
         <configfile name="script">
 from RIAssigner.data import PandasData, MatchMSData
+import numpy as np
 #if $input.ext in ["csv", "tsv", "parquet"]
 query = PandasData('${input}', '${input.ext}', rt_unit="seconds")
 #else
 query = MatchMSData('${input}', '${input.ext}', rt_unit="seconds")
+#end if
+#if $preclean
+n_ri = len(query.retention_indices)
+query.retention_indices = np.repeat(None, n_ri)
 #end if
 query.init_ri_from_comment('${format}')
 query.write('results.${input.ext}')
@@ -42,6 +47,11 @@ query.write('results.${input.ext}')
             <option value="SemiStdNP">Semi Standard Non-Polar</option>
             <option value="StdNP">Standard Non-Polar</option>
             <option value="StdPolar">Standard Polar</option>
+        </param>
+        <param type="boolean" name="preclean" label="Pre-clean input" checked="true" truevalue="True" falsevalue="False">
+            <help>
+                Remove retention indices prior to initialization from comment.
+            </help>
         </param>
     </inputs>
 

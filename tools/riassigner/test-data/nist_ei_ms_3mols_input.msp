@@ -38,3 +38,29 @@ SMILES: CO
 32.0	742.33
 33.0	10.99
 34.0	1.0
+
+FORMULA: C2H6
+COMMENT: Any=200 ; NIST MS# 23, Seq# M168 |RI:220|
+INCHI: InChI=1S/C2H6/c1-2/h1-2H3
+SMILES: CC
+IONMODE: positive
+COMPOUND_NAME: Ethane
+RETENTION_INDEX: 220.0
+RETENTION_TIME: None
+ADDUCT: [M]+
+PRECURSORMZ: 29.99945142009076
+NUM PEAKS: 14
+2.0         2.0
+12.0        4.0
+13.0        9.99
+14.0        29.97
+15.0        43.96
+16.0        1.0
+24.0        5.0
+25.0        34.97
+26.0        231.79
+27.0        331.7
+28.0        999.0
+29.0        214.81
+30.0        261.76
+31.0        5.0
