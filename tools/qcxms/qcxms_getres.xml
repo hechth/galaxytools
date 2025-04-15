@@ -57,6 +57,17 @@ with open(output_file, 'w') as output:
             </param>
             <output name="msp_output" file="output.msp" ftype="msp"/>
         </test>
+        
+        <!-- water molecule - not implemented way of using input collections -->
+        <!-- <test>
+            <param name="mol" value="water/water.xyz" ftype="xyz"/>
+            <param name="res_files">
+                <collection type="list">
+                    <discover_datasets pattern="__name_and_ext__" directory="water/res_files" />            
+                </collection>
+            </param>
+            <output name="msp_output" file="water/water.msp" ftype="msp"/>
+        </test> -->
     </tests>
 
     <help><![CDATA[
